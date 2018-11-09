@@ -1,0 +1,53 @@
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+// interpret a given string and calculate the number of unique points visited
+public class CoordinateTest {
+
+	public static void main(String[] args) {
+
+    // > means right one step, < means left one step
+    // ^ means up one step, v means down one step
+		String testString = ">^>^v<v<";
+
+		// I am starting at this point
+		Coordinate myCurrentPoint = new Coordinate(0, 0);
+
+		Set<Coordinate> uniquePoints = new LinkedHashSet<>();
+		uniquePoints.add(myCurrentPoint);
+
+		for (char each : testString.toCharArray()) {
+			Coordinate myDestinationPoint = parse(each);
+			// my destination point becomes my current point
+			myCurrentPoint = move(myCurrentPoint, myDestinationPoint);
+			uniquePoints.add(myCurrentPoint);
+		}
+
+		System.out.println("total number of unique points: " + uniquePoints.size());
+		System.out.println("unique points: " + uniquePoints);
+	}
+
+	private static Coordinate parse(char ch) {
+		if (ch == '>') {
+			return new Coordinate(1, 0);
+		}
+		if (ch == '<') {
+			return new Coordinate(-1, 0);
+		}
+		if (ch == '^') {
+			return new Coordinate(0, 1);
+		}
+		if (ch == 'v') {
+			return new Coordinate(0, -1);
+		}
+		return null;
+	}
+
+	public static Coordinate move(Coordinate current, Coordinate destination) {
+		Coordinate newPoint = new Coordinate(current.getX(), current.getY());
+		newPoint.setX(current.getX() + destination.getX());
+		newPoint.setY(current.getY() + destination.getY());
+		return newPoint;
+	}
+
+}
